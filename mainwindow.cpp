@@ -1,12 +1,12 @@
 #include "mainwindow.h"
-
+#include "mytable.h"
 #include <QPushButton>
 #include <QLabel>
 #include <QGridLayout>
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QTableWidget>
+#include <QTableView>
 #include <QStringList>
 #include <QDebug>
 
@@ -23,13 +23,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QPushButton *connect = new QPushButton("Create Server");
     QLabel *m_port = new QLabel("Port");
     QLabel *m_address = new QLabel("IP addr");
-    QTableWidget * m_table = new QTableWidget(5, coll_names.length());
-    m_table->setHorizontalHeaderLabels(coll_names);
+    MyTable *m_table_model = new MyTable(2, 10);
 
-    QTableWidgetItem * new_item = new QTableWidgetItem(QString("First Cell"));
-
-    new_item->setTextColor("blue");
-    m_table->setItem(0, 0, new_item);
+    QTableView *tableView = new QTableView;
+    tableView->setModel(m_table_model);
+    m_table_model->insertRow(3);
 
 
 
@@ -37,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect_layout->addWidget(connect);
     connect_layout->addWidget(m_port);
     connect_layout->addWidget(m_address);
-    table_layout->addWidget(m_table);
+    table_layout->addWidget(tableView);
     main_layout->setContentsMargins(0, 0, 0, 0);
     main_layout->addLayout(table_layout);
     main_layout->addLayout(connect_layout);
