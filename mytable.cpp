@@ -2,35 +2,38 @@
 #include <QAbstractItemModel>
 #include <QAbstractTableModel>
 #include <QDebug>
-MyTable::MyTable(int nRows, int nColumns, QObject *pobj):QAbstractTableModel (pobj), m_nRows(nRows), m_nColumns(nColumns)
+MyTable::MyTable(QObject *pobj):QAbstractTableModel (pobj)
 {
 
 }
 int MyTable::rowCount(const QModelIndex &parent) const
 {
-    return m_nRows;
+    Q_UNUSED(parent);
+    return data_rows.count();
 }
 
 int MyTable::columnCount(const QModelIndex &parent) const
 {
-    return m_nColumns;
+    Q_UNUSED(parent);
+    return CRC + 1;
 }
 
 QVariant MyTable::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid()){
+
+
+    if (!index.isValid() || data_rows.count() <= index.row()){
         return QVariant();
     }
-    QString str = QString("%1, %2").arg(index.row() + 1).arg(index.column() + 1);
-    qDebug()<<index;
-    return (role == Qt::DisplayRole || role == Qt::EditRole) ? m_hash.value(index, QVariant(str)) : QVariant();
+
+    return (role == Qt::DisplayRole || role == Qt::EditRole) ? data_rows[index.row()][columns(index.column())]:QVariant();
 }
 
 bool MyTable::setData(const QModelIndex &index, const QVariant &value, int nRole)
 {
     if (!index.isValid() && nRole == Qt::EditRole)
     {
-        m_hash[index] = value;
+        data_rows[index.row()][columns(index.column())] = value;
         emit dataChanged(index, index);
         return true;
     }
@@ -38,10 +41,44 @@ bool MyTable::setData(const QModelIndex &index, const QVariant &value, int nRole
     return false;
 }
 
+QVariant MyTable::headerData(int section, Qt::Orientation orientation, int role) const
+{
+
+
+    if(role != Qt::DisplayRole)
+    {
+        return QVariant();
+    }
+    if(role == Qt::DisplayRole && orientation == Qt::Horizontal)
+    {
+
+        return columns_names[section];
+    }
+    return QVariant();
+}
+
 Qt::ItemFlags MyTable::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags flags = QAbstractTableModel::flags(index);
     return index.isValid() ? (flags | Qt::ItemIsEditable) : flags;
+}
+
+void MyTable::appendData(QStringList rec_data)
+{
+    QHash<columns, QVariant> rd;
+    rd[IP] = rec_data[0];
+    rd[PORT] = rec_data[1];
+    rd[TIME] = rec_data[2];
+    int rows = data_rows.count();
+
+    beginInsertRows(QModelIndex(), rows, rows);
+    data_rows.append(rd);
+    endInsertRows();
+}
+
+void setCell(QHash<int, QString> cell_data)
+{
+
 }
 MyTable::~MyTable()
 {

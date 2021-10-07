@@ -2,8 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
-
+#include <QTime>
+#include <QLineEdit>
+class MyTable;
 
 class MainWindow : public QWidget
 {
@@ -13,9 +14,13 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void Append();
+    void editData();
+
 public:
-
-
+    MyTable *m_table_model;
+    QLineEdit *ip_addr;
 
 };
 
