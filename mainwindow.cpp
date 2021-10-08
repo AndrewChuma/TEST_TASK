@@ -11,6 +11,8 @@
 #include <QDebug>
 #include <QTime>
 #include <QLineEdit>
+#include <QPropertyAnimation>
+
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent)
 {
@@ -21,25 +23,35 @@ MainWindow::MainWindow(QWidget *parent) :
     QVBoxLayout * main_layout = new QVBoxLayout;
     QGridLayout * connect_layout = new QGridLayout;
 
+
     QPushButton *pbAddData = new QPushButton("Add string");
     QLabel *m_port = new QLabel("Port");
     QLabel *m_address = new QLabel("IP addr");
     ip_addr = new QLineEdit;
-
+    m_port_edit = new QLineEdit;
+    rec_time = new QTime;
 
     m_table_model = new MyTable;
     QTableView *tableView = new QTableView;
     tableView->setModel(m_table_model);
 
-
+    QPropertyAnimation *green_to_white = new QPropertyAnimation(pbAddData);
+    qDebug()<<green_to_white->propertyName();
+    green_to_white->setDuration(10000);
+    green_to_white->setStartValue(QColor(Qt::green));
+    green_to_white->setEndValue(QColor(Qt::white));
+    green_to_white->start();
 
 
     main_layout->setStretch(0,1);main_layout->setStretch(1,1);main_layout->setStretch(2,2);
     connect_layout->addWidget(m_address, 0, 0);
     connect_layout->addWidget(ip_addr, 0, 1);
     connect_layout->addWidget(m_port, 1, 0);
+    connect_layout->addWidget(m_port_edit, 1, 1);
 
     connect_layout->addWidget(pbAddData, 2, 2);
+
+
 
 
     main_layout->setContentsMargins(0, 0, 0, 0);
@@ -49,8 +61,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     setLayout(main_layout);
-    connect(pbAddData, SIGNAL(clicked()), SLOT(Append()));
-    connect(ip_addr, SIGNAL(editingFinished()), SLOT(editData()));
+    connect(pbAddData, SIGNAL(clicked()), this, SLOT(Append()));
+    connect(m_port_edit, SIGNAL(editingFinished()), SLOT(makePort()));
+    connect(ip_addr, SIGNAL(editingFinished()), SLOT(makeIP()));
 
 
 }
@@ -58,13 +71,23 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::Append()
 {
 
-        QStringList to_send = {"192.168.0.20", "80", QTime::currentTime().toString()};
-        m_table_model->appendData(to_send);
+
+        qDebug()<<m_data[MyTable::columns::IP];
+        m_data[MyTable::columns::TIME] = rec_time->currentTime();
+        m_table_model->appendData(m_data);
+
 }
 
-void MainWindow::editData()
+void MainWindow::makePort()
 {
+    m_data[MyTable::columns::PORT] = m_port_edit->text();
+    qDebug()<<m_data[MyTable::columns::PORT];
+}
 
+void MainWindow::makeIP()
+{
+    m_data[MyTable::columns::IP] = ip_addr->text();
+    qDebug()<<m_data[MyTable::columns::IP];
 }
 MainWindow::~MainWindow()
 {

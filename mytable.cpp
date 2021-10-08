@@ -2,6 +2,7 @@
 #include <QAbstractItemModel>
 #include <QAbstractTableModel>
 #include <QDebug>
+#include <QBrush>
 MyTable::MyTable(QObject *pobj):QAbstractTableModel (pobj)
 {
 
@@ -20,7 +21,9 @@ int MyTable::columnCount(const QModelIndex &parent) const
 
 QVariant MyTable::data(const QModelIndex &index, int role) const
 {
-
+    if(role == Qt::BackgroundColorRole){
+        return QBrush(Qt::green);
+    }
 
     if (!index.isValid() || data_rows.count() <= index.row()){
         return QVariant();
@@ -29,17 +32,7 @@ QVariant MyTable::data(const QModelIndex &index, int role) const
     return (role == Qt::DisplayRole || role == Qt::EditRole) ? data_rows[index.row()][columns(index.column())]:QVariant();
 }
 
-bool MyTable::setData(const QModelIndex &index, const QVariant &value, int nRole)
-{
-    if (!index.isValid() && nRole == Qt::EditRole)
-    {
-        data_rows[index.row()][columns(index.column())] = value;
-        emit dataChanged(index, index);
-        return true;
-    }
 
-    return false;
-}
 
 QVariant MyTable::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -56,30 +49,36 @@ QVariant MyTable::headerData(int section, Qt::Orientation orientation, int role)
     }
     return QVariant();
 }
-
+/*
 Qt::ItemFlags MyTable::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags flags = QAbstractTableModel::flags(index);
     return index.isValid() ? (flags | Qt::ItemIsEditable) : flags;
 }
 
-void MyTable::appendData(QStringList rec_data)
+bool MyTable::setData(const QModelIndex &index, const QVariant &value, int nRole)
 {
-    QHash<columns, QVariant> rd;
-    rd[IP] = rec_data[0];
-    rd[PORT] = rec_data[1];
-    rd[TIME] = rec_data[2];
+    if (!index.isValid() && nRole == Qt::EditRole)
+    {
+        data_rows[index.row()][columns(index.column())] = value;
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    return false;
+}
+*/
+void MyTable::appendData(QHash<columns, QVariant> & data)
+{
+
     int rows = data_rows.count();
 
     beginInsertRows(QModelIndex(), rows, rows);
-    data_rows.append(rd);
+    data_rows.append(data);
     endInsertRows();
 }
 
-void setCell(QHash<int, QString> cell_data)
-{
 
-}
 MyTable::~MyTable()
 {
 

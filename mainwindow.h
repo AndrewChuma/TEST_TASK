@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include <QTime>
 #include <QLineEdit>
-class MyTable;
+#include "mytable.h"
+
 
 class MainWindow : public QWidget
 {
@@ -16,11 +17,16 @@ public:
 
 public slots:
     void Append();
-    void editData();
+    void makePort();
+    void makeIP();
+
 
 public:
     MyTable *m_table_model;
     QLineEdit *ip_addr;
+    QLineEdit * m_port_edit;
+    QTime * rec_time;
+    QHash<MyTable::columns, QVariant> m_data;
 
 };
 
