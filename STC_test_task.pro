@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         animatelabel.cpp \
+        coder.cpp \
         main.cpp \
         mainwindow.cpp \
         mydelegate.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
 
 HEADERS += \
         animatelabel.h \
+        coder.h \
         mainwindow.h \
         mydelegate.h \
         myserver.h \

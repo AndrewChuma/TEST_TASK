@@ -12,7 +12,8 @@
 #include <QTime>
 #include <QLineEdit>
 #include <QPropertyAnimation>
-#include <mydelegate.h>
+#include "mydelegate.h"
+#include "myserver.h"
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent)
 {
@@ -69,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     green_to_white->setStartValue(QColor(Qt::green));
     green_to_white->setEndValue(QColor(Qt::white));
     green_to_white->start();
-
+    MyServer *connection = new MyServer;
 
 }
 

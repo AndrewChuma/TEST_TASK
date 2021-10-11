@@ -10,7 +10,7 @@ MyServer::MyServer(QObject *parent):QObject (parent), m_port(80)
 {
     m_tcpserver = new QTcpServer(this);
 
-    if(!m_tcpserver->listen(QHostAddress("192.168.0.10"), m_port)){
+    if(!m_tcpserver->listen(QHostAddress::AnyIPv4, 0)){
         qDebug()<<"Unable to start server";
         m_tcpserver->close();
         return;
