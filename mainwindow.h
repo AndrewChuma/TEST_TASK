@@ -5,6 +5,8 @@
 #include <QTime>
 #include <QLineEdit>
 #include "mytable.h"
+#include <QLabel>
+#include "animatelabel.h"
 
 
 class MainWindow : public QWidget
@@ -22,6 +24,8 @@ public slots:
 
 
 public:
+    AnimateLabel * an_label;
+    QPropertyAnimation *green_to_white;
     MyTable *m_table_model;
     QLineEdit *ip_addr;
     QLineEdit * m_port_edit;

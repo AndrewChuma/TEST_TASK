@@ -3,6 +3,8 @@
 #include <QAbstractTableModel>
 #include <QDebug>
 #include <QBrush>
+#include "animatelabel.h"
+#include <QLabel>
 MyTable::MyTable(QObject *pobj):QAbstractTableModel (pobj)
 {
 
@@ -16,20 +18,19 @@ int MyTable::rowCount(const QModelIndex &parent) const
 int MyTable::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return CRC + 1;
+    return CRC;
 }
 
 QVariant MyTable::data(const QModelIndex &index, int role) const
 {
-    if(role == Qt::BackgroundColorRole){
-        return QBrush(Qt::green);
-    }
+
 
     if (!index.isValid() || data_rows.count() <= index.row()){
         return QVariant();
     }
 
     return (role == Qt::DisplayRole || role == Qt::EditRole) ? data_rows[index.row()][columns(index.column())]:QVariant();
+
 }
 
 
@@ -47,7 +48,7 @@ QVariant MyTable::headerData(int section, Qt::Orientation orientation, int role)
 
         return columns_names[section];
     }
-    return QVariant();
+    //return QVariant();
 }
 /*
 Qt::ItemFlags MyTable::flags(const QModelIndex &index) const
@@ -58,7 +59,7 @@ Qt::ItemFlags MyTable::flags(const QModelIndex &index) const
 
 bool MyTable::setData(const QModelIndex &index, const QVariant &value, int nRole)
 {
-    if (!index.isValid() && nRole == Qt::EditRole)
+    if (index.isValid() && nRole == Qt::EditRole)
     {
         data_rows[index.row()][columns(index.column())] = value;
         emit dataChanged(index, index);

@@ -25,13 +25,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        animatelabel.cpp \
         main.cpp \
         mainwindow.cpp \
+        mydelegate.cpp \
         myserver.cpp \
         mytable.cpp
 
 HEADERS += \
+        animatelabel.h \
         mainwindow.h \
+        mydelegate.h \
         myserver.h \
         mytable.h
 

@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QAbstractTableModel>
-
-
+#include <QPropertyAnimation>
+#include <QLabel>
 class MyTable : public QAbstractTableModel
 {
     Q_OBJECT
@@ -21,6 +21,8 @@ public:
        CRC
     };
     Q_ENUM(columns)
+
+
 public:
 
     MyTable(QObject * pobj = nullptr);
@@ -29,21 +31,20 @@ public:
 public:
     QVariant data(const QModelIndex &index, int nRole) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-  //bool setData(const QModelIndex &index, const QVariant &value, int nRole);
+   // bool setData(const QModelIndex &index, const QVariant &value, int nRole);
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
-   // Qt::ItemFlags flags(const QModelIndex &index) const;
+    //Qt::ItemFlags flags(const QModelIndex &index) const;
 
     void appendData(QHash<columns, QVariant> &);
+    QColor color();
+    void setColor(const QColor &color);
 
 
 signals:
 
 public slots:
 private:
-    int m_nRows;
-    int m_nColumns;
-
 
 
     //QHash<columns, QVariant> received_data;
