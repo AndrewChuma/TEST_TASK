@@ -18,7 +18,7 @@ int MyTable::rowCount(const QModelIndex &parent) const
 int MyTable::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return CRC;
+    return CRC + 1;
 }
 
 QVariant MyTable::data(const QModelIndex &index, int role) const

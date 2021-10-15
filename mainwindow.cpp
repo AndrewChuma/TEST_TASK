@@ -35,11 +35,11 @@ MainWindow::MainWindow(QWidget *parent) :
     rec_time = new QTime;
 
     m_table_model = new MyTable;
-    QTableView *tableView = new QTableView(this);
+    tableView = new QTableView(this);
     tableView->setModel(m_table_model);
-    MyDelegate * fadeRow = new MyDelegate(this);
+    //MyDelegate * fadeRow = new MyDelegate(this);
 
-    tableView->setItemDelegate(fadeRow);
+    //tableView->setItemDelegate(fadeRow);
 
 
     main_layout->setStretch(0,1);main_layout->setStretch(1,1);main_layout->setStretch(2,2);
@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     green_to_white->setStartValue(QColor(Qt::green));
     green_to_white->setEndValue(QColor(Qt::white));
     green_to_white->start();
-    MyServer *connection = new MyServer;
+    connection = new MyServer;
 
 }
 
@@ -88,6 +88,7 @@ void MainWindow::makePort()
 {
     m_data[MyTable::columns::PORT] = m_port_edit->text();
     qDebug()<<m_data[MyTable::columns::PORT];
+
 }
 
 void MainWindow::makeIP()

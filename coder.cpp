@@ -1,6 +1,18 @@
 #include "coder.h"
+#include <QByteArray>
+#include <QDataStream>
 
-coder::coder()
+
+Coder::Coder()
+{
+
+}
+void Coder::waitingStart()
+{
+
+}
+
+void Coder::waitingEnd()
 {
 
 }

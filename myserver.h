@@ -2,7 +2,8 @@
 #define MYSERVER_H
 
 #include <QObject>
-
+#include <QTcpSocket>
+#include "coder.h"
 class QTcpServer;
 
 class MyServer: public QObject
@@ -17,6 +18,7 @@ public slots:
 private:
     uint16_t m_port;
     QTcpServer *m_tcpserver;
+    QHash<quintptr, Coder> socket_coder_hash;
 };
 
 #endif // MYSERVER_H

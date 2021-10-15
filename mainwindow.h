@@ -7,8 +7,8 @@
 #include "mytable.h"
 #include <QLabel>
 #include "animatelabel.h"
-
-
+#include <QTableView>
+#include "myserver.h"
 class MainWindow : public QWidget
 {
     Q_OBJECT
@@ -31,6 +31,8 @@ public:
     QLineEdit * m_port_edit;
     QTime * rec_time;
     QHash<MyTable::columns, QVariant> m_data;
+    QTableView *tableView;
+    MyServer * connection;
 
 };
 
